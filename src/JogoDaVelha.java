@@ -18,6 +18,9 @@ public class JogoDaVelha {
     String jogadorO = "O";
     String jogadorAtual = jogadorX;
 
+    boolean gameOver = false;
+    int turnos = 0;
+
     public JogoDaVelha() {
         tela.setVisible(true);
         tela.setSize(larguraTabuleiro, alturaTabuleiro);
@@ -54,11 +57,16 @@ public class JogoDaVelha {
 
                 casa.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        if (gameOver) return;
                         JButton casa = (JButton) e.getSource();
                         if (casa.getText() == "") {
                             casa.setText(jogadorAtual);
-                            jogadorAtual = jogadorAtual == jogadorX ? jogadorO : jogadorX;
-                            textoRotulo.setText("vez do jogador " + jogadorAtual);
+                            turnos++;
+                            checkWinner();
+                            if (!gameOver){
+                                jogadorAtual = jogadorAtual == jogadorX ? jogadorO : jogadorX;
+                                textoRotulo.setText("vez do jogador " + jogadorAtual);
+                            }
                         }
                     }
                 });
@@ -67,4 +75,77 @@ public class JogoDaVelha {
         }
     }
 
+    void checkWinner() {
+        //Horizontal
+        for (int v = 0; v < 3; v++){
+            if (tabuleiro[v][0].getText() == "") continue;
+            
+            if (tabuleiro[v][0].getText() == tabuleiro[v][1].getText() &&
+                tabuleiro[v][1].getText() == tabuleiro[v][2].getText()){
+                    for (int i = 0; i < 3; i++){
+                        setVencedor(tabuleiro[v][i]);
+                    }
+                    gameOver = true;
+                    return;
+                }
+        }
+
+        //Vertical
+        for (int c = 0; c < 3; c++) {
+            if (tabuleiro[0][c].getText() == "") continue;
+            
+            if (tabuleiro[0][c].getText() == tabuleiro[1][c].getText() &&
+                tabuleiro[1][c].getText() == tabuleiro[2][c].getText()){
+                    for (int i = 0; i < 3; i++){
+                        setVencedor(tabuleiro[i][c]);
+                    }
+                    gameOver = true;
+                    return;
+                }
+
+        }
+
+        //Diagonal
+        if (tabuleiro[0][0].getText() == tabuleiro[1][1].getText() &&
+            tabuleiro[1][1].getText() == tabuleiro[2][2].getText() &&
+            tabuleiro[0][0].getText() != ""){
+                for (int i = 0; i < 3; i++){
+                    setVencedor(tabuleiro[i][i]);
+                }
+                gameOver = true;
+                return;
+        }
+
+        //Anti-Diagonal
+        if (tabuleiro[0][2].getText() == tabuleiro[1][1].getText() &&
+            tabuleiro[1][1].getText() == tabuleiro[2][0].getText() &&
+            tabuleiro[0][2].getText() != ""){
+                    setVencedor(tabuleiro[0][2]);
+                    setVencedor(tabuleiro[1][1]);
+                    setVencedor(tabuleiro[2][0]);
+                    gameOver = true;
+                    return;
+        }
+
+        if (turnos == 9) {
+            for (int v = 0; v < 3; v++){
+                for (int c = 0; c < 3; c++){
+                    setEmpate(tabuleiro[v][c]);
+            }
+        }
+    }
+
 }
+    void setVencedor(JButton casa){
+        casa.setForeground(Color.green);
+        casa.setBackground(Color.gray);
+        textoRotulo.setText(jogadorAtual + " é o vencedor!!!");
+    }
+
+    void setEmpate(JButton casa){
+        casa.setForeground(Color.yellow);
+        casa.setBackground(Color.gray);
+        textoRotulo.setText(" Empate");
+    }
+}
+
