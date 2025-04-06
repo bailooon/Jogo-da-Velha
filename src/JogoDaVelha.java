@@ -1,13 +1,13 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 public class JogoDaVelha {
+
     int larguraTabuleiro = 600;
     int alturaTabuleiro = 650;
-    
+
     JFrame tela = new JFrame("Jogo da Velha");
     JLabel textoRotulo = new JLabel();
     JPanel textoPainel = new JPanel();
@@ -41,8 +41,8 @@ public class JogoDaVelha {
         tabuleiroPainel.setBackground(Color.darkGray);
         tela.add(tabuleiroPainel);
 
-        for (int v=0; v<3; v++){
-            for (int c=0; c<3; c++){
+        for (int v = 0; v < 3; v++) {
+            for (int c = 0; c < 3; c++) {
                 JButton casa = new JButton();
                 tabuleiro[v][c] = casa;
                 tabuleiroPainel.add(casa);
@@ -52,10 +52,19 @@ public class JogoDaVelha {
                 casa.setFont(new Font("Arial", Font.BOLD, 120));
                 casa.setFocusable(false);
 
-                
+                casa.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JButton casa = (JButton) e.getSource();
+                        if (casa.getText() == "") {
+                            casa.setText(jogadorAtual);
+                            jogadorAtual = jogadorAtual == jogadorX ? jogadorO : jogadorX;
+                            textoRotulo.setText("vez do jogador " + jogadorAtual);
+                        }
+                    }
+                });
+
             }
         }
     }
 
-    
 }
