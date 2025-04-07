@@ -14,6 +14,8 @@ public class JogoDaVelha {
     JPanel textoPainel = new JPanel();
     JPanel tabuleiroPainel = new JPanel();
     JPanel placarPainel = new JPanel();
+    JPanel reiniciarPainel = new JPanel();
+    JPanel painelSul = new JPanel();
 
     JButton[][] tabuleiro = new JButton[3][3];
     JButton reiniciar = new JButton();
@@ -43,7 +45,8 @@ public class JogoDaVelha {
 
         placar.setBackground(Color.black);
         placar.setForeground(Color.white);
-        placar.setFont(new Font("Arial", Font.BOLD, 30));
+        placar.setFont(new Font("Arial", Font.BOLD, 22));
+        placar.setText("Jogador X: " + pontosX + " | Jogador O: " + pontosO);
         
         placar.setOpaque(true);
 
@@ -57,7 +60,24 @@ public class JogoDaVelha {
 
         placarPainel.setLayout(new BorderLayout());
         placarPainel.add(placar);
-        tela.add(placarPainel, BorderLayout.SOUTH);
+        // tela.add(placarPainel, BorderLayout.SOUTH);
+
+        reiniciarPainel.setLayout(new BorderLayout());
+        reiniciarPainel.add(reiniciar);
+        // tela.add(reiniciarPainel);
+
+        reiniciar.setFont(new Font("Arial", Font.BOLD, 20));
+        reiniciar.setText("Reiniciar Jogo");
+        reiniciar.setFocusable(false);
+        reiniciar.setBackground(Color.gray);
+        reiniciar.setForeground(Color.white);
+
+        painelSul.setLayout(new GridLayout());
+        painelSul.add(placarPainel);
+        painelSul.add(reiniciarPainel);
+        tela.add(painelSul, BorderLayout.SOUTH);
+
+
 
 
 
