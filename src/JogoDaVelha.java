@@ -60,11 +60,9 @@ public class JogoDaVelha {
 
         placarPainel.setLayout(new BorderLayout());
         placarPainel.add(placar);
-        // tela.add(placarPainel, BorderLayout.SOUTH);
 
         reiniciarPainel.setLayout(new BorderLayout());
         reiniciarPainel.add(reiniciar);
-        // tela.add(reiniciarPainel);
 
         reiniciar.setFont(new Font("Arial", Font.BOLD, 20));
         reiniciar.setText("Reiniciar Jogo");
@@ -77,45 +75,48 @@ public class JogoDaVelha {
         painelSul.add(reiniciarPainel);
         tela.add(painelSul, BorderLayout.SOUTH);
 
-
-
-
-
-        for (int v = 0; v < 3; v++) {
-            for (int c = 0; c < 3; c++) {
-                JButton casa = new JButton();
-                tabuleiro[v][c] = casa;
-                tabuleiroPainel.add(casa);
-
-                casa.setBackground(Color.darkGray);
-                casa.setForeground(Color.white);
-                casa.setFont(new Font("Arial", Font.BOLD, 120));
-                casa.setFocusable(false);
-
-                casa.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        if (gameOver) return;
-                        JButton casa = (JButton) e.getSource();
-                        if (casa.getText() == "") {
-                            casa.setText(jogadorAtual);
-                            turnos++;
-                            checkWinner();
-                            if (gameOver == true && jogadorAtual == jogadorX){
-                                pontosX += 1;
-                            }else if(gameOver == true && jogadorAtual == jogadorO){
-                                pontosO += 1;
-                            }
-                            placar.setText("Jogador X: " + pontosX + " | Jogador O: " + pontosO);
-                            if (!gameOver){
-                                jogadorAtual = jogadorAtual == jogadorX ? jogadorO : jogadorX;
-                                textoRotulo.setText("vez do jogador " + jogadorAtual);
+        reiniciar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                reiniciarJogo();
+            }
+        });
+        
+            
+           for (int v = 0; v < 3; v++) {
+                for (int c = 0; c < 3; c++) {
+                    JButton casa = new JButton();
+                    tabuleiro[v][c] = casa;
+                    tabuleiroPainel.add(casa);
+    
+                    casa.setBackground(Color.darkGray);
+                    casa.setForeground(Color.white);
+                    casa.setFont(new Font("Arial", Font.BOLD, 120));
+                    casa.setFocusable(false);   
+                    casa.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            if (gameOver) return;
+                            JButton casa = (JButton) e.getSource();
+                            if (casa.getText() == "") {
+                                casa.setText(jogadorAtual);
+                                turnos++;
+                                checkWinner();
+                                if (gameOver == true && jogadorAtual == jogadorX){
+                                    pontosX += 1;
+                                }else if(gameOver == true && jogadorAtual == jogadorO){
+                                    pontosO += 1;
+                                }
+                                placar.setText("Jogador X: " + pontosX + " | Jogador O: " + pontosO);
+                                if (!gameOver){
+                                    jogadorAtual = jogadorAtual == jogadorX ? jogadorO : jogadorX;
+                                    textoRotulo.setText("vez do jogador " + jogadorAtual);
+                                }
                             }
                         }
-                    }
-                });
-
+                    });
+    
+                }
             }
-        }
+        
     }
 
     void checkWinner() {
@@ -192,5 +193,24 @@ public class JogoDaVelha {
         casa.setBackground(Color.gray);
         textoRotulo.setText(" Empate");
     }
+    
+    void reiniciarJogo() {
+        for (int v = 0; v < 3; v++) {
+            for (int c = 0; c < 3; c++) {
+                JButton casa = tabuleiro[v][c];
+                casa.setText("");
+                casa.setEnabled(true);
+                casa.setBackground(Color.darkGray);
+                casa.setForeground(Color.white);
+            }
+        }
+    
+        gameOver = false;
+        turnos = 0;
+        jogadorAtual = jogadorX;
+        textoRotulo.setText("Jogo da Velha");
+    }
+    
 }
+
 
