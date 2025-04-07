@@ -6,17 +6,22 @@ import javax.swing.*;
 public class JogoDaVelha {
 
     int larguraTabuleiro = 600;
-    int alturaTabuleiro = 650;
+    int alturaTabuleiro = 700;
 
     JFrame tela = new JFrame("Jogo da Velha");
     JLabel textoRotulo = new JLabel();
+    JLabel placar = new JLabel();
     JPanel textoPainel = new JPanel();
     JPanel tabuleiroPainel = new JPanel();
+    JPanel placarPainel = new JPanel();
 
     JButton[][] tabuleiro = new JButton[3][3];
+    JButton reiniciar = new JButton();
     String jogadorX = "X";
     String jogadorO = "O";
     String jogadorAtual = jogadorX;
+    int pontosX = 0;
+    int pontosO = 0;
 
     boolean gameOver = false;
     int turnos = 0;
@@ -29,12 +34,18 @@ public class JogoDaVelha {
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         tela.setLayout(new BorderLayout());
 
-        textoRotulo.setBackground(Color.darkGray);
+        textoRotulo.setBackground(Color.black);
         textoRotulo.setForeground(Color.white);
         textoRotulo.setFont(new Font("Arial", Font.BOLD, 50));
         textoRotulo.setHorizontalAlignment(JLabel.CENTER);
         textoRotulo.setText("Jogo da Velha");
         textoRotulo.setOpaque(true);
+
+        placar.setBackground(Color.black);
+        placar.setForeground(Color.white);
+        placar.setFont(new Font("Arial", Font.BOLD, 30));
+        
+        placar.setOpaque(true);
 
         textoPainel.setLayout(new BorderLayout());
         textoPainel.add(textoRotulo);
@@ -43,6 +54,12 @@ public class JogoDaVelha {
         tabuleiroPainel.setLayout(new GridLayout(3, 3));
         tabuleiroPainel.setBackground(Color.darkGray);
         tela.add(tabuleiroPainel);
+
+        placarPainel.setLayout(new BorderLayout());
+        placarPainel.add(placar);
+        tela.add(placarPainel, BorderLayout.SOUTH);
+
+
 
         for (int v = 0; v < 3; v++) {
             for (int c = 0; c < 3; c++) {
@@ -63,6 +80,12 @@ public class JogoDaVelha {
                             casa.setText(jogadorAtual);
                             turnos++;
                             checkWinner();
+                            if (gameOver == true && jogadorAtual == jogadorX){
+                                pontosX += 1;
+                            }else if(gameOver == true && jogadorAtual == jogadorO){
+                                pontosO += 1;
+                            }
+                            placar.setText("Jogador X: " + pontosX + " | Jogador O: " + pontosO);
                             if (!gameOver){
                                 jogadorAtual = jogadorAtual == jogadorX ? jogadorO : jogadorX;
                                 textoRotulo.setText("vez do jogador " + jogadorAtual);
@@ -132,6 +155,7 @@ public class JogoDaVelha {
                 for (int c = 0; c < 3; c++){
                     setEmpate(tabuleiro[v][c]);
             }
+            gameOver = true;
         }
     }
 
@@ -140,6 +164,7 @@ public class JogoDaVelha {
         casa.setForeground(Color.green);
         casa.setBackground(Color.gray);
         textoRotulo.setText(jogadorAtual + " é o vencedor!!!");
+        
     }
 
     void setEmpate(JButton casa){
