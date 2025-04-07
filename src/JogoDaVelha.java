@@ -213,6 +213,7 @@ public class JogoDaVelha {
             }
         }
         gameOver = false;
+        houveVencedor = false;
         turnos = 0;
         jogadorAtual = jogadorX;
         textoRotulo.setText("Jogo da Velha");
