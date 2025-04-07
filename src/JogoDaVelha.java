@@ -27,8 +27,10 @@ public class JogoDaVelha {
 
     boolean gameOver = false;
     int turnos = 0;
+    boolean houveVencedor = false;
 
     public JogoDaVelha() {
+        //Configurando o Layout da tela
         tela.setVisible(true);
         tela.setSize(larguraTabuleiro, alturaTabuleiro);
         tela.setLocationRelativeTo(null);
@@ -81,7 +83,7 @@ public class JogoDaVelha {
             }
         });
         
-            
+            //Loop para as ações do jogo
            for (int v = 0; v < 3; v++) {
                 for (int c = 0; c < 3; c++) {
                     JButton casa = new JButton();
@@ -100,10 +102,10 @@ public class JogoDaVelha {
                                 casa.setText(jogadorAtual);
                                 turnos++;
                                 checkWinner();
-                                if (gameOver == true && jogadorAtual == jogadorX){
-                                    pontosX += 1;
-                                }else if(gameOver == true && jogadorAtual == jogadorO){
-                                    pontosO += 1;
+                                if (gameOver == true && houveVencedor == true && jogadorAtual == jogadorX){
+                                        pontosX += 1;                                  
+                                }else if(gameOver == true && houveVencedor == true && jogadorAtual == jogadorO){
+                                        pontosO += 1;                                    
                                 }
                                 placar.setText("Jogador X: " + pontosX + " | Jogador O: " + pontosO);
                                 if (!gameOver){
@@ -118,7 +120,7 @@ public class JogoDaVelha {
             }
         
     }
-
+    //Método para verificar se alguém foi vencedor
     void checkWinner() {
         //Horizontal
         for (int v = 0; v < 3; v++){
@@ -130,6 +132,7 @@ public class JogoDaVelha {
                         setVencedor(tabuleiro[v][i]);
                     }
                     gameOver = true;
+                    houveVencedor = true;
                     return;
                 }
         }
@@ -144,6 +147,7 @@ public class JogoDaVelha {
                         setVencedor(tabuleiro[i][c]);
                     }
                     gameOver = true;
+                    houveVencedor = true;
                     return;
                 }
 
@@ -157,6 +161,7 @@ public class JogoDaVelha {
                     setVencedor(tabuleiro[i][i]);
                 }
                 gameOver = true;
+                houveVencedor = true;
                 return;
         }
 
@@ -168,16 +173,19 @@ public class JogoDaVelha {
                     setVencedor(tabuleiro[1][1]);
                     setVencedor(tabuleiro[2][0]);
                     gameOver = true;
+                    houveVencedor = true;
                     return;
         }
 
         if (turnos == 9) {
-            for (int v = 0; v < 3; v++){
-                for (int c = 0; c < 3; c++){
-                    setEmpate(tabuleiro[v][c]);
+            if(gameOver == false){
+                for (int v = 0; v < 3; v++){
+                    for (int c = 0; c < 3; c++){
+                        setEmpate(tabuleiro[v][c]);
+                    }
+                    gameOver = true;
+                }
             }
-            gameOver = true;
-        }
     }
 
 }
@@ -204,7 +212,6 @@ public class JogoDaVelha {
                 casa.setForeground(Color.white);
             }
         }
-    
         gameOver = false;
         turnos = 0;
         jogadorAtual = jogadorX;
